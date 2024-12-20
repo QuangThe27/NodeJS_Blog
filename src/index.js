@@ -6,6 +6,9 @@ const app = express();
 const port = 3000;
 
 const route = require('./routes');
+const db = require('./config/db');
+
+db.connect();
 
 // Cấu hình đường dãn file tĩnh
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,13 +31,14 @@ app.engine(
         extname: '.hbs', // đổi đuôi các file .handlebars thành .hdb
     }),
 );
+
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/views'));
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // Home, search, contact (các trang như trên để vào 1 trang)
 // Routes khởi tạo, truyền đến src/routes/index.js
 route(app);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`App listening on port ${port}`);
 });
