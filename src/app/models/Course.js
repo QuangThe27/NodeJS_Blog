@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const slug = require('mongoose-slug-generator');
+// const slug = require('mongoose-slug-generator'); //(lỗi thư viện)
+const slug = require('mongoose-slug-updater');
 
 mongoose.plugin(slug);
 

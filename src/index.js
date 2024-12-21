@@ -2,6 +2,7 @@ const { engine } = require('express-handlebars');
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const methodOverride = require('method-override');
 const app = express();
 const port = 3000;
 
@@ -21,6 +22,9 @@ app.use(
 );
 app.use(express.json());
 
+// HTTP
+app.use(methodOverride('_method'));
+
 // HTTP Logger
 app.use(morgan('combined'));
 
@@ -28,7 +32,12 @@ app.use(morgan('combined'));
 app.engine(
     'hbs',
     engine({
-        extname: '.hbs', // đổi đuôi các file .handlebars thành .hdb
+        // đổi đuôi các file .handlebars thành .hdb
+        extname: '.hbs',
+        // Cấu hình phép cộng
+        helpers: {
+            sum: (a, b) => a + b,
+        },
     }),
 );
 
