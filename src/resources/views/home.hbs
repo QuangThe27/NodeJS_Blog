@@ -3,10 +3,15 @@
         {{! Sử dụng thư viện handlebars để lặp }}
         {{#each courses}}
             <div class='col-sm-6 col-lg-4'>
-                <div class='card card-course-item' style='width:400px'>
-                    <img class='card-img-top' src='{{this.image}}' alt='Card image' />
+                <div class='card card-course-item'>
+                    {{! Tạo chuyển hướng slug }}
+                    <a href='/courses/{{this.slug}}'>
+                        <img class='card-img-top' src='{{this.image}}' alt='Card image' />
+                    </a>
                     <div class='card-body'>
-                        <h4 class='card-title'>{{this.name}}</h4>
+                        <a href='/courses/{{this.slug}}'>
+                            <h4 class='card-title'>{{this.name}}</h4>
+                        </a>
                         <p class='card-text'>{{this.descripstion}}</p>
                         <a href='#' class='btn btn-primary'>Mua Khóa học</a>
                     </div>
