@@ -5,16 +5,29 @@ const { mutipleMongooseToObject } = require('../../util/mongoose');
 class MeController {
     // [GET] /me/stored/courses
     storedCourses(req, res, next) {
-        // res.send('MeController!!!');
-        // res.render('me/stored-courses');
-
-        Course.find({})
-            .then((courses) =>
+        // xử lý bất đồng bộ
+        Promise.all([Course.find({}), Course.countDocumentsWithDeleted({ deleted: true })])
+            .then(([courses, deletedCount]) => {
                 res.render('me/stored-courses', {
+                    deletedCount,
                     courses: mutipleMongooseToObject(courses),
-                }),
-            )
+                });
+            })
             .catch(next);
+
+        // Course.countDocumentsWithDeleted({ deleted: true })
+        //     .then((deletedCount) => {
+        //         console.log('Số khóa học đã xóa: ', deletedCount);
+        //     })
+        //     .catch(next);
+
+        // Course.find({})
+        //     .then((courses) =>
+        //         res.render('me/stored-courses', {
+        //             courses: mutipleMongooseToObject(courses),
+        //         }),
+        //     )
+        //     .catch(next);
     }
 
     // [GET] /me/trash/courses
