@@ -65,6 +65,21 @@ class CourseController {
             .then(() => res.redirect('back'))
             .catch(next);
     }
+
+    // [PATCH] /courses/handle-form-actions
+    handleFormActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                // Xóa tất cả khóa học có id nằm trong list
+                Course.delete({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+
+            default:
+                res.json({ message: 'Action không hợp lệ' });
+        }
+    }
 }
 
 module.exports = new CourseController();
