@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const methodOverride = require('method-override');
 const app = express();
 const port = 3000;
+const SortMiddleware = require('./app/middlewares/SortMiddleware');
 
 const route = require('./routes');
 const db = require('./config/db');
@@ -25,6 +26,9 @@ app.use(express.json());
 // HTTP
 app.use(methodOverride('_method'));
 
+// Sort middlewares
+app.use(SortMiddleware);
+
 // HTTP Logger
 app.use(morgan('combined'));
 
@@ -37,6 +41,26 @@ app.engine(
         // Cấu hình phép cộng
         helpers: {
             sum: (a, b) => a + b,
+            sortable: (filed, sort) => {
+                const sortType = filed === sort.column ? sort.type : 'default';
+
+                const icons = {
+                    default: 'fa-solid fa-sort',
+                    asc: 'fa-solid fa-arrow-up-short-wide',
+                    desc: 'fa-solid fa-arrow-down-short-wide',
+                };
+
+                const types = {
+                    default: 'desc',
+                    asc: 'desc',
+                    desc: 'asc',
+                };
+
+                const icon = icons[sort.type];
+                const type = types[sort.type];
+
+                return `<a href="?_sort&column=${filed}&type=${type}"><i class="${icon}"></i></a>`;
+            },
         },
     }),
 );
